@@ -1,0 +1,47 @@
+.key {
+  text-align: center;
+  border: 1px solid blue;
+  padding: 10px;
+  color: blue;
+}
+
+.active {
+  border-radius: 5px solid green;
+  background-color: red;
+  min-width: 10px;
+  min-height: 10px;
+}
+
+.keyboardContainer {
+  margin: 0 auto;
+  width: 1000px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.container-keys {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, auto));
+  width: 100%;
+}
+.nums-container {
+  border: 2px solid red;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.keyboard {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1 fr;
+  // height: 100%;
+
+  border: 2px solid gray;
+}
+
+.textArea {
+  width: 100%;
+}

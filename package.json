@@ -1,7 +1,7 @@
 {
   "name": "layout",
   "version": "1.0.0",
-  "description": "",
+  "description": "Clone the repo\r Run npm i to install dependencies\r Run commands in terminal:",
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=development&&webpack serve",
@@ -15,9 +15,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": ""
-  },
   "homepage": "",
   "devDependencies": {
     "@babel/core": "^7.15.8",
