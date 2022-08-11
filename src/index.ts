@@ -48,7 +48,7 @@ function letterClick(element: HTMLElement) {
   // animateClick(element);
 }
 
-function catchClick(element: HTMLElement | any) {
+function catchClick(element: HTMLDivElement) {
   console.log(element);
   const type = element.dataset.type;
   if (type === 'func') {
@@ -60,8 +60,8 @@ function catchClick(element: HTMLElement | any) {
   animateClick(element);
 }
 
-function clickListener(element: KeyboardEvent) {
-  catchClick(element.target);
+function clickListener(element: HTMLDivElement) {
+  catchClick(element);
 }
 
 function animateClick(element: HTMLDivElement) {

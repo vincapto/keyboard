@@ -4,7 +4,7 @@ import { alpabet as letters, nums, func, alpabetAlt, numsShift, allCodes } from 
 type code = Record<string, string>;
 type keys = { arr: code; type: string };
 type keyType = Record<string, keys>;
-type listener = (element?: KeyboardEvent) => void;
+type listener = (element?: HTMLDivElement) => void;
 
 class Virtual {
   activeFunctionList = ['CapsLock', 'AltLeft', 'AltRight', 'ShiftRight', 'ShiftLeft', 'ControlRight', 'ControlLeft'];
