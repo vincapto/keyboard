@@ -1,11 +1,13 @@
 import { createContainer, createKeyNode, keyboardTamplate } from './keyboard';
 import { alpabet as letters, nums, func, alpabetAlt, numsShift, allCodes } from './keys';
 
-type code = Record<number, string>;
+type code = Record<string, string>;
 type keys = { arr: code; type: string };
 type keyType = Record<string, keys>;
+type listener = (element?: KeyboardEvent) => void;
 
 class Virtual {
+  activeFunctionList = ['CapsLock', 'AltLeft', 'AltRight', 'ShiftRight', 'ShiftLeft', 'ControlRight', 'ControlLeft'];
   caretPosition = 0;
   keyboardNodes: any = { language: '', nums: '', case: false };
   isCapsLock = false;
@@ -29,22 +31,21 @@ class Virtual {
   };
   funcList: string[] = [];
   keys = [this.numKeys, this.alphabetKeys, this.funcKeys];
-  commandList: any = { changeLang: ['18', '16'] };
+  commandList: any = { changeLang: ['Shift', 'Alt'] };
   textArea: any = '';
   nodes: any = {};
 
-  addListener(nodes: any, clickListener: any) {
+  addListener(nodes: HTMLDivElement[], clickListener: listener) {
     nodes.forEach((element: any) => {
       element.addEventListener('click', clickListener);
     });
-    ``;
   }
 
-  createKeyboard(clickListener: any): HTMLDivElement[] {
+  createKeyboard(clickListener: listener): HTMLDivElement[] {
     return Object.values(keyboardTamplate).map((a) => {
       const nodes = a.map((b) => {
-        return b.arr.split(' ').map((value: string) => {
-          const key = allCodes[value].toString();
+        return b.arr.split(' ').map((key: string) => {
+          const value = allCodes[key];
           const keyNode = createKeyNode(value, key, `key ${b.type}`, b.type);
           this.keyboardNodes[key] = keyNode;
           return keyNode;
@@ -58,11 +59,12 @@ class Virtual {
   }
 
   clearFuncList() {
-    this.funcList.map((a) => {
+    console.log('clear');
+    this.getTwinList().map((a) => {
       if (this.funcList.length != 0) if (this.keyboardNodes[a]) this.keyboardNodes[a].classList.remove('active');
     });
-    if (this.isCapsLock && !this.keyboardNodes[20].classList.contains('active'))
-      this.keyboardNodes[20].classList.add('active');
+    if (this.isCapsLock && !this.keyboardNodes['CapsLock'].classList.contains('active'))
+      this.keyboardNodes['CapsLock'].classList.add('active');
     this.funcList = [];
   }
 
@@ -70,18 +72,38 @@ class Virtual {
     this.funcList.push(func);
   }
 
-  toggleActiveClass(flag: any, key: any) {
+  toggleActiveClass(flag: boolean, key: string) {
     if (flag && !this.keyboardNodes[key].classList.contains('active')) this.keyboardNodes[key].classList.add('active');
-    if (!flag && this.keyboardNodes[key].classList.contains('active'))
+    if (!flag && this.keyboardNodes[key].classList.contains('active')) {
       this.keyboardNodes[key].classList.remove('active');
+    }
+  }
+
+  getTwinKey(key: string) {
+    switch (key) {
+      case 'Shift':
+        return ['ShiftRight', 'ShiftLeft'];
+      case 'Alt':
+        return ['AltLeft', 'AltRight'];
+      case 'Control':
+        return ['ControlRight', 'ControlLeft'];
+      default:
+        return [key];
+    }
+  }
+
+  getTwinList() {
+    return this.funcList.map((a: string) => this.getTwinKey(a)).flat();
   }
 
   checkActiveButton() {
-    if (this.funcList.length != 0)
-      this.funcList.map((a) => {
-        this.toggleActiveClass(this.keyboardNodes[a] !== 'undefined', a);
-      });
-    this.toggleActiveClass(this.isCapsLock, 20);
+    const activeButtons = this.getTwinList();
+    this.activeFunctionList.map((a) => {
+      console.log(activeButtons.includes(a));
+      this.toggleActiveClass(activeButtons.includes(a), a);
+      return;
+    });
+    this.toggleActiveClass(this.isCapsLock, 'CapsLock');
   }
 
   checkLang() {
@@ -103,7 +125,7 @@ class Virtual {
     return (this.isCapsLock && !this.isShift) || (this.isShift && !this.isCapsLock);
   }
 
-  checkNodes(clickListener: any) {
+  checkNodes(clickListener: listener) {
     const selector = [];
     if (this.keyboardNodes.language !== this.languageSwitch || this.keyboardNodes.case !== this.checkUpper) {
       this.keyboardNodes.language = this.languageSwitch;
@@ -127,7 +149,7 @@ class Virtual {
     return this.isShift ? this.numbers.shifted : this.numbers.normal;
   }
 
-  updateKeyboard(obj: any, className: any, clickListener: any): HTMLDivElement[] {
+  updateKeyboard(obj: keys, className: string, clickListener: listener): HTMLDivElement[] {
     const nodes = Object.entries(obj.arr).map(([key, value]: any) => {
       const keyNode = createKeyNode(value, key, `key ${className} `, obj.type);
       this.keyboardNodes[key] = keyNode;
@@ -137,7 +159,7 @@ class Virtual {
     return nodes;
   }
 
-  toUpperCaseLetters(arr: any): any {
+  toUpperCaseLetters(arr: code): keys {
     const letters = Object.entries(arr).reduce((acc, [key, value]: any) => {
       return { ...acc, [key]: value.toUpperCase() };
     }, {});
@@ -200,7 +222,7 @@ class Virtual {
     Alt: () => {
       this.isChanged = true;
     },
-    Ctrl: () => {
+    Control: () => {
       this.isChanged = true;
     },
     Win: () => {

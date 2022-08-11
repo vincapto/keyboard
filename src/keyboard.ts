@@ -17,25 +17,25 @@ function createContainer(panelName: string) {
 
 const keyboardTamplate = {
   1: [
-    { arr: '1 2 3 4 5 6 7 8 9 0 - =', type: 'num' },
+    { arr: 'Backquote Digit1 Digit2 Digit3 Digit4 Digit5 Digit6 Digit7 Digit8 Digit9 Digit0 Minus Equal', type: 'num' },
     { arr: 'Backspace', type: 'func' },
   ],
   2: [
     { arr: 'Tab', type: 'func' },
-    { arr: 'q w e r t y u i o p', type: 'letter' },
+    { arr: 'KeyQ KeyW KeyE KeyR KeyT KeyY KeyU KeyI KeyO KeyP', type: 'letter' },
     { arr: 'Delete', type: 'func' },
   ],
   3: [
     { arr: 'CapsLock', type: 'func' },
-    { arr: 'a s d f g h j k l', type: 'letter' },
+    { arr: 'KeyA KeyS KeyD KeyF KeyG KeyH KeyJ KeyK KeyL', type: 'letter' },
     { arr: 'Enter', type: 'func' },
   ],
   4: [
-    { arr: 'Shift', type: 'func' },
-    { arr: 'z x c v b n m', type: 'letter' },
-    { arr: 'Up Shift', type: 'func' },
+    { arr: 'ShiftLeft', type: 'func' },
+    { arr: 'KeyZ KeyX KeyC KeyV KeyB KeyN KeyM Comma Period Slash', type: 'letter' },
+    { arr: 'ArrowUp ShiftRight', type: 'func' },
   ],
-  5: [{ arr: 'Ctrl Alt Space Left Down Right', type: 'func' }],
+  5: [{ arr: 'ControlLeft AltLeft Space ArrowLeft ArrowDown ArrowRight AltRight ControlRight', type: 'func' }],
 };
 
 function createKeyNode(text: string, code: string, className: string, type: string) {

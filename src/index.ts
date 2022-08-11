@@ -3,23 +3,23 @@ import './styles/index.scss';
 import './sas';
 import { Virtual } from './virtual';
 
-const activeFunctionList = ['CapsLock', 'Shift', 'Alt', 'Ctrl'];
+const activeFunctionList = ['CapsLock', 'Shift', 'Alt', 'Control'];
 const virtual = new Virtual();
-const textArea: any = document.querySelector('.textArea');
-
+const textArea: HTMLTextAreaElement = document.querySelector('.textArea');
+updateKeyboard();
 document.querySelector('.template').append(...virtual.createKeyboard(clickListener));
 
-function updateFunctionList(element: any) {
-  if (!virtual.funcList.includes(element.dataset.code)) {
-    virtual.pushFunc(element.dataset.code);
+function updateFunctionList(element: HTMLElement) {
+  if (!virtual.funcList.includes(element.dataset.name)) {
+    virtual.pushFunc(element.dataset.name);
   } else {
-    const index = virtual.funcList.indexOf(element.dataset.code);
+    const index = virtual.funcList.indexOf(element.dataset.name);
     virtual.funcList.splice(index, 1);
-    virtual.keyboardNodes[element.dataset.code].classList.toggle('active');
+    virtual.checkActiveButton();
   }
 }
 
-function funcClick(element: any) {
+function funcClick(element: HTMLElement) {
   if (activeFunctionList.includes(element.dataset.name)) updateFunctionList(element);
   //@ts-ignore
   virtual.funcEvents[element.dataset.name]();
@@ -28,7 +28,7 @@ function funcClick(element: any) {
   if (virtual.isChanged) updateKeyboard();
 }
 
-function letterClick(element: any) {
+function letterClick(element: HTMLElement) {
   virtual.addLetter(element.dataset.name);
   textArea.value = virtual.textArea;
 
@@ -44,10 +44,12 @@ function letterClick(element: any) {
   if (virtual.isChanged) updateKeyboard();
   textArea.value = virtual.textArea;
   virtual.isShift = false;
-  animateClick(element);
+
+  // animateClick(element);
 }
 
-function catchClick(element: any) {
+function catchClick(element: HTMLElement | any) {
+  console.log(element);
   const type = element.dataset.type;
   if (type === 'func') {
     funcClick(element);
@@ -58,11 +60,11 @@ function catchClick(element: any) {
   animateClick(element);
 }
 
-function clickListener(element: any) {
+function clickListener(element: KeyboardEvent) {
   catchClick(element.target);
 }
 
-function animateClick(element: any) {
+function animateClick(element: HTMLDivElement) {
   element.animate([{ transform: 'translate3D(0, 0, 0)' }, { transform: 'translate3D(0, 3px, 0)' }], 100);
 }
 
@@ -74,9 +76,10 @@ function updateKeyboard() {
 
 function rewriteNodes() {
   const nodes = virtual.checkNodes(clickListener);
+
   if (nodes.length !== 0) {
     nodes.map((a) => {
-      document.querySelectorAll('.' + a).forEach((element: any) => {
+      document.querySelectorAll('.' + a).forEach((element: HTMLDivElement) => {
         const newElement = virtual.keyboardNodes[element.dataset.code];
         element.parentNode.replaceChild(newElement, element);
       });
@@ -89,8 +92,8 @@ document.addEventListener(
   (event) => {
     event.preventDefault;
     event.stopPropagation;
-    if (event.repeat == false && virtual.keyboardNodes[event.which]) {
-      catchClick(virtual.keyboardNodes[event.which]);
+    if (event.repeat == false && virtual.keyboardNodes[event.code]) {
+      catchClick(virtual.keyboardNodes[event.code]);
     }
   },
   false
