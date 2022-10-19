@@ -1,0 +1,1 @@
+{"version":3,"file":"user.c656446a10dcf1a9e0ff.js","mappings":"AAEAA,QAAQC,IAFI","sources":["webpack://layout/./src/user.js"],"sourcesContent":["const abc = 'Somethig';\r\n\r\nconsole.log(abc);\r\n"],"names":["console","log"],"sourceRoot":""}
