@@ -7,7 +7,9 @@ const activeFunctionList = ['CapsLock', 'Shift', 'Alt', 'Control'];
 const virtual = new Virtual();
 const textArea: HTMLTextAreaElement = document.querySelector('.textArea');
 updateKeyboard();
-document.querySelector('.template').append(...virtual.createKeyboard(clickListener));
+document
+  .querySelector('.template')
+  .append(...virtual.createKeyboard(clickListener));
 
 function updateFunctionList(element: HTMLElement) {
   if (!virtual.funcList.includes(element.dataset.name)) {
@@ -20,7 +22,8 @@ function updateFunctionList(element: HTMLElement) {
 }
 
 function funcClick(element: HTMLElement) {
-  if (activeFunctionList.includes(element.dataset.name)) updateFunctionList(element);
+  if (activeFunctionList.includes(element.dataset.name))
+    updateFunctionList(element);
   //@ts-ignore
   virtual.funcEvents[element.dataset.name]();
   virtual.checkActiveButton();
@@ -65,7 +68,13 @@ function clickListener(element: HTMLDivElement) {
 }
 
 function animateClick(element: HTMLDivElement) {
-  element.animate([{ transform: 'translate3D(0, 0, 0)' }, { transform: 'translate3D(0, 3px, 0)' }], 100);
+  element.animate(
+    [
+      { transform: 'translate3D(0, 0, 0)' },
+      { transform: 'translate3D(0, 3px, 0)' },
+    ],
+    100
+  );
 }
 
 function updateKeyboard() {
